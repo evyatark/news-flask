@@ -7,6 +7,27 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 
+
+'''
+++++++++
++++
++++ Public API
++++
++++
+'''
+def process_all():
+    #list_of_urls = urls()
+    for url in urls():
+        more_article_ids = process_page(url, 1000)
+        return more_article_ids
+'''
++++
+++++++++
+'''
+
+
+
+
 def urls():
     return [
      'https://www.haaretz.co.il'
@@ -60,11 +81,6 @@ def start_link(link):
     return link.find("1.8")
 
 
-def process_all():
-    #list_of_urls = urls()
-    for url in urls():
-        more_article_ids = process_page(url, 1000)
-        return more_article_ids
 
 def process_page(url, limit):
     logger.info("loading url %s...", url)
