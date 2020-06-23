@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Welcome to FlaskBlog {% endblock %}</h1>
+    {% for url in urls %}
+        <a href={{ "http://www.haaretz.co.il" + url }}>
+            <h2>{{ url }}</h2>
+        </a>
+        <hr>
+    {% endfor %}
+{% endblock %}
