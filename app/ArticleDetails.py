@@ -22,4 +22,3 @@ class ArticleDetails:
         self.image2 = ''
         self.thumbnail = ''
 
-

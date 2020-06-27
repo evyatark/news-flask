@@ -2,6 +2,7 @@ import logging
 from bs4 import BeautifulSoup
 from time import time
 from urllib.request import urlopen, Request
+from urllib.error import URLError, HTTPError
 from app import Constants, ArticleDetails, ArticleContent, Utils
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -27,12 +28,12 @@ def soupHtml(html):
     logger.debug("[%s] souping...", "id")
     bs = BeautifulSoup(html, 'html.parser')
     if (bs.article is None):
-        return ArticleDetails(id, Constants.HEADER_OF_UNKNOWN, '', '', '', '')
+        return None, ArticleDetails.ArticleDetails('-1', Constants.HEADER_OF_UNKNOWN, '', '', '', '')
 
     # first find publish time, if too old, we don't need to continue parsing
     if not decide_include_article(fast_find_times(bs)):
         logger.debug("stopped processing this article - too old")
-        return ArticleDetails(id, Constants.HEADER_OF_UNKNOWN, '', '', '', '')
+        return None, ArticleDetails.ArticleDetails('-1', Constants.HEADER_OF_UNKNOWN, '', '', '', '')
 
     logger.debug('[%s] souping completed in %s seconds', "id", time() - ts)
 
@@ -44,8 +45,14 @@ def soupHtml(html):
 def readAndProcess(siteId):
     logger.info("===================== started ===================")
     url = "https://www.haaretz.co.il/amp/" + siteId
-    html = browseUrl(url)
-    logger.error(html)
+    try:
+        html = browseUrl(url)   # create actual HTTP request to the url (including the special user-agent), to load its HTML
+    except HTTPError as err:    # 404 not found
+        logger.error("HTTPError, code={0}".format(err.code))
+        articleDetails = ArticleDetails.ArticleDetails('-1', err.code, '', '', '', '')
+        return articleDetails
+
+    logger.error(html)  #should be info not error
     bs, article = soupHtml(html)    # BeautifulSoup bs
     if not bs:
         return article
@@ -78,7 +85,10 @@ def scrape_details(siteId, bs):
 
     ## scrape from <body>
     publishedAt, updatedAt = find_times(bs)
-    author = bs.article.find(name='span', class_='js-stat-util-info').attrs['data-statutil-writer']
+    try:
+        author = bs.article.find(name='span', class_='js-stat-util-info').attrs['data-statutil-writer']
+    except:
+        author=''
     #image1 = bs.article.find(name='figure', class_='c-figure__main').find(name='amp-img').attrs['src']
     image2 = bs.article.find(name='figure', class_='c-figure--wide').find(name='amp-img').attrs['src']
     header_crumbs_root = bs.article.find(name='ol', class_='c-article-header__crumbs')

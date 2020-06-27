@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 @app.route('/hello')
 def hello():
-    bs1.process_page()
+    #bs1.process_page()
     return "Hello, amazing microblog World!"
 
 @app.route('/')
@@ -20,7 +20,8 @@ def index():
     return render_template('index.html')
 
 '''
-Process start page.
+Process start page. (currently starting from "www.haaretz.co.il",
+in future the start-page will be specified by the argument)
 Returns: a list of relative URLs (such as '/sport/world-soccer/1.8940657')
 return content-type json
 '''
