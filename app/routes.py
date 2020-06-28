@@ -1,5 +1,5 @@
 from app import app, bs1, ReadSinglePage
-from flask import render_template, Response
+from flask import render_template, Response, make_response, jsonify
 import json
 import logging
 
@@ -58,11 +58,25 @@ def scrape_single_page(url):
     # json_str = json.dumps(dict)
     return convert_to_json_response1(articleDetails)
 
+
 def convert_to_json_response1(articleDetails):
     dict = articleDetails.__dict__
     dict.pop('id', 'dummy_value')
-    json_str = json.dumps(str(dict), ensure_ascii=False)
-    logger.error(json_str)
-    r = Response(response=json.loads(json_str), status=200, mimetype="application/json")
-    r.headers["Content-Type"] = "application/json; charset=utf-8"
+    #json_str = json.dumps(str(dict), ensure_ascii=False)    # without ensure_ascii=False we receive \unnnn instead of Hebrew characters
+    #json_str = json_str.replace("'", '"')
+    #logger.error(json_str)
+    r = jsonify(dict)
+    #r = jsonify('{"siteId": "1","createdAt": "2", "updatedAt": "3"}')
+    #r = Response(response=dict, status=200, mimetype="application/json")
+    #r = Response(response=json.loads(json_str), status=200, mimetype="application/json")
+    #r.headers["Content-Type"] = "application/json; charset=utf-8"
     return r
+
+
+@app.route('/flask/strip-single-page/<string:siteId>') # return content-type HTML!!
+def strip_single_page(siteId):
+    html = ReadSinglePage.readAndStrip(siteId)
+    content_type = 'text/html; charset=utf-8'
+    headers = {'Content-Type': content_type}
+    response = make_response(html, 200, headers)
+    return response

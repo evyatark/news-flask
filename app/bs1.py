@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def process_all():
     #list_of_urls = urls()
     for url in urls():
-        more_article_ids = process_page(url, 1000)
+        more_article_ids = process_page(url, 10)
         return more_article_ids
 '''
 +++

@@ -56,6 +56,9 @@ def rename_file_remove_suffix(file_full_path, suffix, file_suffix):
                     p.rename(desired_full_path)
 
 
+'''compare list of dirs and files to same list in Google Drive'''
+
+
 if __name__ == '__main__':
     dir = '/home/evyatar/Downloads/video/0ready for upload/ek3074 - Data/Udemy - AWS Database RDS DynamoDB Neptune (Updated) [900MB]'
     #dir = '/home/evyatar/Downloads/video/0ready for upload/ek3073 - Python/Udemy - Real time Data Analysis and Visualization in Python [680MB]'
