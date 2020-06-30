@@ -3,3 +3,6 @@ __pycache__/
 app/__pycache__/
 app/settings.yaml
 app/credentials.json
+settings.yaml
+credentials.json
+
