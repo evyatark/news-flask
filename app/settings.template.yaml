@@ -1,0 +1,8 @@
+client_config_backend: settings
+client_config:
+  client_id: ADD YOUR client_id HERE
+  client_secret: ADD YOUR client_secret HERE
+save_credentials: True
+save_credentials_backend: file
+# before first execution, create empty file credentials.json in the project directory
+save_credentials_file: credentials.json
