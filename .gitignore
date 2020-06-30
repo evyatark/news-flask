@@ -1,1 +1,5 @@
 .idea/
+__pycache__/
+app/__pycache__/
+app/settings.yaml
+app/credentials.json
