@@ -1,7 +1,7 @@
 # news-flask
 Python Flask web scraping news sites
 
-This flask application exposes some services for my Quarkus [NewsStand application](https://github.com/evyatark/news-quarkus).
+This flask application exposes some services for my Quarkus [NewsStand application](https://github.com/evyatark/news-quarkus/tree/storage).
 
 This flask application is written in Python and performs web-scraping of some news web sites.
 Currently working on Haaretz web site as a first POC.
